@@ -96,7 +96,10 @@ for L in `git log --author="$git_user" --since="$git_date" --pretty=format:'%s%n
     git_commit_messages=$git_commit_messages"\"$L\" and "
 done
 
-git_commit_messages=${git_commit_messages: 0: ${#git_commit_messages}-4} # remove last 4 characters
+git_commit_messages_length=${#git_commit_messages}
+if [ $git_commit_messages_length -gt 3 ] ; then  
+  git_commit_messages=${git_commit_messages:0:$git_commit_messages_length-4} # remove last 4 characters
+fi;
 
 git_logs_30d=`git log --author="$git_user" --since="30 days ago" --pretty=format:'%cd %s' --date=short`
 
