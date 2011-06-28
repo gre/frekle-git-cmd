@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Script files
 config_file=`echo ~/.frekle_config`
 projects_file=`echo ~/.frekle_projects`
@@ -12,6 +14,8 @@ editor="vi"
 git_user=`git config --list | grep user.name | cut -f 2 -d "="`
 # Git log for a particular day
 git_date=$1
+
+md5=`which md5sum md5 | head -n 1`
 
 date_today=`date "+%Y-%m-%d"`
 IFS=$'\n' # "for" seaparator
@@ -54,7 +58,7 @@ if [[ ${#git_url} -eq 0 ]]; then
     echo "fatal: Not a git repository"
     exit 1
 fi
-git_url_md5=`echo $git_url | md5`
+git_url_md5=`echo $git_url | $md5 | cut -f1 -d" "`
 eval frekle_project=\$frekle_git2proj_${git_url_md5}_name
 eval frekle_project_id=\$frekle_git2proj_${git_url_md5}_id
 if [[ ${#frekle_project} -eq 0 ]]; then
